@@ -51,6 +51,7 @@ context('Assertions', () => {
     // https://on.cypress.io/assertions
     it('expect - make an assertion about a specified subject', () => {
       // We can use Chai's BDD style assertions
+      // eslint-disable-next-line no-unused-expressions
       expect(true).to.be.true
       const o = { foo: 'bar' }
 
@@ -96,7 +97,7 @@ context('Assertions', () => {
         .should(($div) => {
           expect($div).to.have.length(1)
 
-          const className = $div[0].className
+          const { className } = $div[0]
 
           expect(className).to.match(/heading-/)
         })
@@ -116,7 +117,7 @@ context('Assertions', () => {
             throw new Error('Did not find 1 element')
           }
 
-          const className = $div[0].className
+          const { className } = $div[0]
 
           if (!className.match(/heading-/)) {
             throw new Error(`Could not find class "heading-" in ${className}`)
@@ -128,14 +129,14 @@ context('Assertions', () => {
       /**
        * Text from the first element.
        * @type {string}
-      */
+       */
       let text
 
       /**
        * Normalizes passed text,
        * useful before comparing text with spaces and different capitalization.
        * @param {string} s Text to normalize
-      */
+       */
       const normalizeText = (s) => s.replace(/\s/g, '').toLowerCase()
 
       cy.get('.two-elements')
@@ -165,12 +166,11 @@ context('Assertions', () => {
     })
 
     it('retries the should callback until assertions pass', () => {
-      cy.get('#random-number')
-        .should(($div) => {
-          const n = parseFloat($div.text())
+      cy.get('#random-number').should(($div) => {
+        const n = parseFloat($div.text())
 
-          expect(n).to.be.gte(1).and.be.lte(10)
-        })
+        expect(n).to.be.gte(1).and.be.lte(10)
+      })
     })
   })
 })
